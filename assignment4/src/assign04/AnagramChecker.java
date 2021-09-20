@@ -55,85 +55,79 @@ public class AnagramChecker {
 			return false;
 	}
 	
-	public static String[] getLargestAnagramGroup(String[] arr) {
-		//Create hashmap with all versions of annagrams
-		//increment key values everytime that annagram is found
-		//get most common annagram
-		//if word the annagram of word in orignal string equals key, add that word to return string
+public static String[] getLargestAnagramGroup(String[] arr) {		
+		//make comparator
+		Comparator<String> cmp = new OrderByAnagram();
 		
-		String[] copyArr = new String [arr.length];
-		String[] annagramArray = new String [arr.length];
-		HashMap<String, Integer> annaMap = new HashMap<String, Integer>();
-		String mostCommonAnnagram = "";
-		ArrayList<String> uniqueAnagrams = new ArrayList<String>();
+		//sort the array into anagram alphabetical order
+		insertionSort(arr, cmp );
+		System.out.println( Arrays.toString(arr) );
 		
-		//Copy values of initial array into copyArray
-		for(int i = 0; i < arr.length; i++) {
-			copyArr[i] = arr[i];
+		//find where the most anagrams are
+		int[] anagramIndexInfo = findBigAnagramInfo(arr);
+		
+		//create return string array
+		String[] anagramGroup = new String[ anagramIndexInfo[2] ];
+		
+		//if there are no anagrams, return empty array
+		if (anagramGroup.length < 1) {
+			return anagramGroup;
 		}
 		
-		
-		//Create new array with initial arrays annagram values
-		for(int j = 0; j < arr.length; j++) {
-			annagramArray[j] = sort(arr[j]);
-		}
-		System.out.print("Anagram Array: ");
-		System.out.println(Arrays.toString(annagramArray));
-		
-		
-		//Populate hashmap with annagram count
-		for(String s : annagramArray) {
-			if(annaMap.containsKey(s)) {
-				annaMap.replace(s, (annaMap.get(s)) + 1);
-			}
-			else{ 
-				annaMap.put(s, 0);
-				uniqueAnagrams.add(s);
-			}
-		}
-	
-		mostCommonAnnagram = uniqueAnagrams.get(0);
-		for(String s : uniqueAnagrams) {
-			if(annaMap.get(s) > annaMap.get(mostCommonAnnagram)) {
-				s = mostCommonAnnagram;
-			}
-		}
-			uniqueAnagrams.clear();
-			
-			for(int l = 0; l < copyArr.length; l++) {
-				if(sort(copyArr[l]).equals(mostCommonAnnagram)) {
-					uniqueAnagrams.add(copyArr[l]);
-				}
-			}
-		
-			String[] returnArr = new String[uniqueAnagrams.size()];
-		for(int m = 0; m < uniqueAnagrams.size(); m++) {
-			returnArr[m] = uniqueAnagrams.get(m);
+		//add all the words in the big anagram group to the return array
+		for(int index = anagramIndexInfo[0]; index <= anagramIndexInfo[1]; index++) {
+			//create a new index that begins at zero, for indexing return array
+			int normalizedIndex = index - anagramIndexInfo[0];
+			//add value to the return array
+			anagramGroup[normalizedIndex] = arr[index];
 		}
 		
-		return returnArr;
-		
-		
-//		
-//		String[] temp = new String[arr.length];
-//		for(int i = 0; i < arr.length; i++) {
-//			temp[i] = arr[i];
-//		}
-//		
-//		//Make annagram array
-//		for(int i = 0; i < arr.length; i++) {
-//			arr[i] = sort(arr[i]);
-//		}
-//		insertionSort(arr, new OrderByString ());		
-//		getMostFrequent(arr);
+		return anagramGroup;
 	}
 	
-	
-//	public static String getMostFrequent(String[] str) {
-//		int counter = 0;
-//		
-//		
-//	}
+	private static int[] findBigAnagramInfo(String[] arr) {
+		//initialize variables
+		int bigAnagramIndex, bigAnagramIndexEnd, bigAnagramSize, tempIndex, tempAnagramSize;
+		bigAnagramIndex = bigAnagramIndexEnd = bigAnagramSize = tempIndex = tempAnagramSize = 0;
+		
+		boolean lastMatch = false;
+		
+		for(int index = 1; index < arr.length; index++) {
+			//if this and last are same, AND last two were NOT a match(first match)
+			if( areAnagrams( arr[index-1], arr[index] ) && !lastMatch ){
+				//update size of anagram list
+				tempIndex = index-1;
+				tempAnagramSize = 2;
+				lastMatch = true;
+			} else if( areAnagrams( arr[index-1], arr[index] ) && lastMatch ) {//(match but not first match)
+				//update anagram size
+				tempAnagramSize++;
+				lastMatch = true;
+			} else if( !(areAnagrams( arr[index-1], arr[index] )) && lastMatch) {//not a match, but last one was
+				//compare
+				if ( tempAnagramSize > bigAnagramSize) {
+					bigAnagramIndex = tempIndex;
+					bigAnagramSize = tempAnagramSize;
+					bigAnagramIndexEnd = index-1;
+				}
+				lastMatch = false;
+			} else {
+				lastMatch = false;
+			}
+		}//end for loop
+		
+		//double check if last match was the biggest of anagrams
+		if( areAnagrams( arr[arr.length-2], arr[arr.length-1] ) && lastMatch ){
+			if ( tempAnagramSize > bigAnagramSize) {
+				bigAnagramIndex = tempIndex;
+				bigAnagramSize = tempAnagramSize;
+				bigAnagramIndexEnd = arr.length-1;
+			}
+		}
+		//return start of anagrams, end of anagrams, and size of anagrams
+		int returnVals[] = {bigAnagramIndex, bigAnagramIndexEnd, tempAnagramSize};
+		return returnVals;
+	}
 	
 	public static String[] readWordsFile(String filename) throws FileNotFoundException {
 		ArrayList<String> wordList = new ArrayList<String>();
@@ -154,12 +148,13 @@ public class AnagramChecker {
 		return returnList;
 	}
 	
-	protected static class OrderByString implements Comparator<String> {
+	protected static class OrderByAnagram implements Comparator<String>{
 
 		@Override
 		public int compare(String o1, String o2) {
-			return o1.compareTo(o2);
+			return AnagramChecker.sort(o1).compareTo( AnagramChecker.sort(o2) );
 		}
+		
 	}
 	
 
