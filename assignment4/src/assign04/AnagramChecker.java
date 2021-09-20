@@ -26,12 +26,8 @@ public class AnagramChecker {
 	 * @return Will return a lexicographically sorted version of the argument string
 	 */
 	public static String sort(String str) {
-		// Make all characters lower-case so A and a are measured equally
-		String lowerCase = str.toLowerCase();
-
-		// Create an array of characters using the lower-case version of the argument
-		// string (str)
-		char[] charArr = lowerCase.toCharArray();
+		//Creat arr of characters in str
+		char[] charArr = str.toCharArray();
 
 		// User insertion sort to sort the characters in the array
 		for (int i = 1; i < charArr.length; i++) {
@@ -96,7 +92,9 @@ public class AnagramChecker {
 	public static boolean areAnagrams(String str1, String str2) {
 		// Uses sort method to order strings lexicographically.
 		// Then compares them using Strings .equals method.
-		if (sort(str1).equals(sort(str2))) {
+		String lowerStr1 = str1.toLowerCase();
+		String lowerStr2 = str2.toLowerCase();
+		if (sort(lowerStr1).equals(sort(lowerStr2))) {
 			// If they are anagrams of each other, return true
 			return true;
 		}
