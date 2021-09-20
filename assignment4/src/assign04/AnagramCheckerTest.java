@@ -185,6 +185,12 @@ class AnagramCheckerTest {
 		String[] testVals = new String[0];
 		assertArrayEquals( testVals, AnagramChecker.getLargestAnagramGroup(testArr) );
 	}
+	@Test
+	void testGetLargestAnagramGroupCapitals() {
+		String[] testArr = {"caSter","tabber","join","batBER","cRAtes","Steacr","Tabber","ratesc","TRABEB","abbERT","abbert"};
+		String[] testVals = {"tabber", "batBER", "Tabber", "TRABEB", "abbERT", "abbert"};
+		assertArrayEquals( testVals, AnagramChecker.getLargestAnagramGroup(testArr) );
+	}
 	//------------------------- getLargestAnagramGroup tests ends-----------------------------
 	
 	protected static class OrderByAnagram implements Comparator<String>{
