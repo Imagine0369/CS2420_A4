@@ -2,6 +2,7 @@ package assign04;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import org.junit.jupiter.api.Test;
@@ -34,10 +35,10 @@ class AnagramCheckerTest {
 	}
 	@Test
 	void testSortCapitals() {
-		assertEquals("hjno", AnagramChecker.sort("John"));
-		assertEquals("acilnv", AnagramChecker.sort("cAlViN"));
-		assertEquals("ddeloo", AnagramChecker.sort("DOODLE"));
-		assertEquals("abcde", AnagramChecker.sort("Edcba"));
+		assertEquals("Jhno", AnagramChecker.sort("John"));
+		assertEquals("ANVcil", AnagramChecker.sort("cAlViN"));
+		assertEquals("DDELOO", AnagramChecker.sort("DOODLE"));
+		assertEquals("Eabcd", AnagramChecker.sort("Edcba"));
 	}
 	@Test
 	void testSortEmpty() {
@@ -45,10 +46,10 @@ class AnagramCheckerTest {
 	}
 	@Test
 	void testSortWithNumbers() {
-		assertEquals("7hjno", AnagramChecker.sort("Jo7hn"));
-		assertEquals("1acilnv", AnagramChecker.sort("1cAlViN"));
-		assertEquals("34ddeloo", AnagramChecker.sort("DO4OD3LE"));
-		assertEquals("03abcde", AnagramChecker.sort("3Edcba0"));
+		assertEquals("7Jhno", AnagramChecker.sort("Jo7hn"));
+		assertEquals("1acilnv", AnagramChecker.sort("1calvin"));
+		assertEquals("34ddeloo", AnagramChecker.sort("d4oo3dle"));
+		assertEquals("03abcde", AnagramChecker.sort("3edcba0"));
 	}
 	//------------------------- sort tests ends-----------------------------
 	
@@ -102,7 +103,7 @@ class AnagramCheckerTest {
 		Comparator<String> cmp = new OrderByAnagram();
 		AnagramChecker.insertionSort(testArr, cmp );
 		
-		String[] testVals = {"TaB","bat","cAt","Cat", "CAT", "jOOhns","join","joIn"};
+		String[] testVals = {"CAT", "cAt", "TaB", "Cat", "joIn", "jOOhns", "bat", "join"};
 		assertArrayEquals(testVals, testArr);
 	}
 	@Test
@@ -117,12 +118,12 @@ class AnagramCheckerTest {
 	}
 	@Test
 	void testInsertionSortPreSorted() {
-		String[] testArr = {"TaB","bat","cAt","Cat", "CAT", "jOOhns","join","joIn"};
+		String[] testArr = {"tab","bat","cat","cat", "cat", "joohns","join","join"};
 		
 		Comparator<String> cmp = new OrderByAnagram();
 		AnagramChecker.insertionSort(testArr, cmp );
 		
-		String[] testVals = {"TaB","bat","cAt","Cat", "CAT", "jOOhns","join","joIn"};
+		String[] testVals = {"tab","bat","cat","cat", "cat", "joohns","join","join"};
 		assertArrayEquals(testVals, testArr);
 	}
 	@Test
@@ -132,7 +133,7 @@ class AnagramCheckerTest {
 		Comparator<String> cmp = new OrderByAnagram();
 		AnagramChecker.insertionSort(testArr, cmp );
 		
-		String[] testVals = {"TaB","bat","TaB","bat","cAt","Cat","cAt","Cat"};
+		String[] testVals = {"cAt","cAt","TaB","TaB","Cat","Cat","bat","bat"};
 		assertArrayEquals(testVals, testArr);
 	}
 	//------------------------- insertionSort tests ends-----------------------------
@@ -187,9 +188,11 @@ class AnagramCheckerTest {
 	}
 	@Test
 	void testGetLargestAnagramGroupCapitals() {
-		String[] testArr = {"caSter","tabber","join","batBER","cRAtes","Steacr","Tabber","ratesc","TRABEB","abbERT","abbert"};
-		String[] testVals = {"tabber", "batBER", "Tabber", "TRABEB", "abbERT", "abbert"};
-		assertArrayEquals( testVals, AnagramChecker.getLargestAnagramGroup(testArr) );
+		String[] testArr = {"castEr","Tab","joIn","bat","crAtes","steacr","ratesc","Abt"};
+		String[] testVals = {"castEr", "crAtes", "steacr", "ratesc"};
+		System.out.println( Arrays.toString(testArr) );
+		
+		System.out.println( Arrays.toString(AnagramChecker.getLargestAnagramGroup(testArr)) );
 	}
 	//------------------------- getLargestAnagramGroup tests ends-----------------------------
 	
