@@ -269,7 +269,9 @@ public class AnagramChecker {
 		 */
 		@Override
 		public int compare(String o1, String o2) {
-			return AnagramChecker.sort(o1).compareTo(AnagramChecker.sort(o2));
+			String lowerStr1 = o1.toLowerCase();
+			String lowerStr2 = o2.toLowerCase();
+			return AnagramChecker.sort(lowerStr1).compareTo(AnagramChecker.sort(lowerStr2));
 		}
 
 	}
