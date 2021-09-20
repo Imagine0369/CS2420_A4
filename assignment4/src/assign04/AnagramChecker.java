@@ -47,14 +47,59 @@ public class AnagramChecker {
 	}
 	
 	public static String[] getLargestAnagramGroup(String[] arr) {
+		//Create hashmap with all versions of annagrams
+		//increment key values everytime that annagram is found
+		//get most common annagram
+		//if word the annagram of word in orignal string equals key, add that word to return string
+		
+		String annagramArray
+		HashMap<String, Integer> annaMap = new HashMap<String, Integer>();
+		
+		
+		
+		for(String s : arr) {
+			if(annaMap.containsValue(s)) {
+				annaMap.put(s, annaMap.get(s) + 1);
+			}
+			else{ 
+				annaMap.put(s, 0);
+			}
+		}
+		
+		
+		
+		
+//		String[] temp = new String[arr.length];
+//		for(int i = 0; i < arr.length; i++) {
+//			temp[i] = arr[i];
+//		}
+//		
+//		//Make annagram array
+//		for(int i = 0; i < arr.length; i++) {
+//			arr[i] = sort(arr[i]);
+//		}
+//		insertionSort(arr, new OrderByString ());		
+//		getMostFrequent(arr);
+	}
+	
+	public static String getMostFrequent(String[] str) {
+		int counter = 0;
 		
 		
 	}
 	
+	protected class OrderByString implements Comparator<String> {
+
+		@Override
+		public int compare(String o1, String o2) {
+			return o1.compareTo(o2);
+		}
+	}
+	
 	public static void main(String[] args) {
 		String[] testArr = {"Art" , "Tar", "Hat", "crates", "rack", "reacts", "Caters", "caster", "car"};
-		String test = "Reacts";
-		String testB = "Caters";
+		String test = "";
+		String testB = "";
 		System.out.println(areAnagrams(test, testB));
 		//System.out.println(sort(testB));
 	}
