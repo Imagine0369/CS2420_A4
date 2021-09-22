@@ -26,7 +26,7 @@ public class AnagramChecker {
 	 * @return Will return a lexicographically sorted version of the argument string
 	 */
 	public static String sort(String str) {
-		//Creat arr of characters in str
+		// Creat arr of characters in str
 		char[] charArr = str.toCharArray();
 
 		// User insertion sort to sort the characters in the array
@@ -215,8 +215,7 @@ public class AnagramChecker {
 		try {
 			scan = new Scanner(file, "utf-8");
 		} catch (FileNotFoundException e) {
-			String[] emptyArr = { "" };
-			return emptyArr;
+			return new String[0];
 		}
 		// Add each String in the file to our ArrayList
 		while (scan.hasNext()) {
@@ -244,11 +243,23 @@ public class AnagramChecker {
 	 */
 	public static String[] getLargestAnagramGroup(String fileName) {
 
+		// If the file we pass in is empty or nonexistent, we will get an array of
+		// length 0 back.
+		// In any instance where we have an array of 0, we can just return the empty
+		// array.
+		if (readWordsFile(fileName).length == 0) {
+			return readWordsFile(fileName);
+		}
+
+		// Otherwise....
 		// Calls readWordsFile to covert file into an array of Strings
 		// Then calls getLargestAnagramGroup to find largest anagram group within the
 		// String array returned by readWordsFile
-		return getLargestAnagramGroup(readWordsFile(fileName));
+		else {
 
+			return getLargestAnagramGroup(readWordsFile(fileName));
+
+		}
 	}
 
 	/**
